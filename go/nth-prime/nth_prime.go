@@ -1,10 +1,7 @@
-package sieve
+package prime
 
 const testVersion = 1
 
-// Sieve return an slice of size max containing
-// a list of primes up to max -1
-// Algo from user Hamain in PE. Translated from C.
 func Sieve(max int) []int {
 	primes := make([]bool, max)
 	for i := 0; i < max; i++ {
@@ -36,4 +33,13 @@ func Sieve(max int) []int {
 	}
 
 	return primesList
+}
+
+var primesList = Sieve(104745)
+
+func Nth(n int) (int, bool) {
+	if n < 1 {
+		return 0, false
+	}
+	return primesList[n-1], true
 }
