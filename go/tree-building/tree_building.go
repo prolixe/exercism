@@ -2,7 +2,6 @@ package tree
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 )
 
@@ -28,10 +27,22 @@ func (n NodeSlice) Less(i, j int) bool { return n[i].ID < n[j].ID }
 
 type Stack struct {
 	nodes []*Node
+
 	count int
 }
 
+func NewStack(size int) *Stack {
+	s := Stack{}
+	s.nodes = make([]*Node, size)
+	return &s
+}
+
 func (s *Stack) Push(n *Node) {
+	if len(s.nodes) > s.count {
+		s.nodes[s.count] = n
+		s.count++
+		return
+	}
 	s.nodes = append(s.nodes[:s.count], n)
 	s.count++
 }
@@ -76,7 +87,7 @@ func Build(records []Record) (*Node, error) {
 	if !rootFound {
 		return nil, errors.New("root not found, invalid records")
 	}
-	nodesStack := Stack{}
+	nodesStack := *NewStack(100)
 	nodesStack.Push(&root)
 	processedRecord[root.ID] = true
 	nodeSize := 1
@@ -88,7 +99,6 @@ func Build(records []Record) (*Node, error) {
 		nodeSize += findChildren(records, currentNode)
 		for _, c := range currentNode.Children {
 			if processedRecord[c.ID] {
-				fmt.Println(c)
 				return nil, errors.New("Already processed this record id. Either cycle or duplicates")
 			}
 			nodesStack.Push(c)
