@@ -190,24 +190,22 @@ func FormatLedger(currency string, locale string, entries []Entry) (string, erro
 	if err != nil {
 		return "", err
 	}
-
 	// Parallelism, always a great idea
 	co := make(chan EntryChan)
 	for i, et := range entriesCopy {
 		go func(i int, entry Entry) {
-			de := formatDescription(entry.Description)
+			description := formatDescription(entry.Description)
 
-			d, err := formatDate(entry.Date, Locale(locale))
+			date, err := formatDate(entry.Date, Locale(locale))
 			if err != nil {
 				co <- EntryChan{e: err}
 				return
 			}
-			a, err := formatChange(entry.Change, Locale(locale), currency)
+			change, err := formatChange(entry.Change, Locale(locale), currency)
 			if err != nil {
 				co <- EntryChan{e: err}
 			}
-
-			s := fmt.Sprintf("%-10s | %-25s | %13s\n", d, de, a)
+			s := fmt.Sprintf("%-10s | %-25s | %13s\n", date, description, change)
 			co <- EntryChan{i: i, s: s}
 		}(i, et)
 	}

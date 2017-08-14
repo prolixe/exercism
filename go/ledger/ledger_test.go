@@ -30,9 +30,9 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-01",
-				date:   "Buy present",
-				Change: -1000,
+				Date:        "2015-01-01",
+				Description: "Buy present",
+				Change:      -1000,
 			},
 		},
 		expected: `
@@ -46,14 +46,14 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-02",
-				date:   "Get present",
-				Change: 1000,
+				Date:        "2015-01-02",
+				Description: "Get present",
+				Change:      1000,
 			},
 			{
-				Date:   "2015-01-01",
-				date:   "Buy present",
-				Change: -1000,
+				Date:        "2015-01-01",
+				Description: "Buy present",
+				Change:      -1000,
 			},
 		},
 		expected: `
@@ -68,14 +68,14 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-01",
-				date:   "Buy present",
-				Change: -1000,
+				Date:        "2015-01-01",
+				Description: "Buy present",
+				Change:      -1000,
 			},
 			{
-				Date:   "2015-01-01",
-				date:   "Get present",
-				Change: 1000,
+				Date:        "2015-01-01",
+				Description: "Get present",
+				Change:      1000,
 			},
 		},
 		expected: `
@@ -90,19 +90,19 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-01",
-				date:   "Something",
-				Change: 0,
+				Date:        "2015-01-01",
+				Description: "Something",
+				Change:      0,
 			},
 			{
-				Date:   "2015-01-01",
-				date:   "Something",
-				Change: -1,
+				Date:        "2015-01-01",
+				Description: "Something",
+				Change:      -1,
 			},
 			{
-				Date:   "2015-01-01",
-				date:   "Something",
-				Change: 1,
+				Date:        "2015-01-01",
+				Description: "Something",
+				Change:      1,
 			},
 		},
 		expected: `
@@ -118,9 +118,9 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-01",
-				date:   "Freude schoner Gotterfunken",
-				Change: -123456,
+				Date:        "2015-01-01",
+				Description: "Freude schoner Gotterfunken",
+				Change:      -123456,
 			},
 		},
 		expected: `
@@ -134,9 +134,9 @@ Date       | Description               | Change
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-01-01",
-				date:   "Buy present",
-				Change: -1000,
+				Date:        "2015-01-01",
+				Description: "Buy present",
+				Change:      -1000,
 			},
 		},
 		expected: `
@@ -150,9 +150,9 @@ Date       | Description               | Change
 		locale:   "nl-NL",
 		entries: []Entry{
 			{
-				Date:   "2015-03-12",
-				date:   "Buy present",
-				Change: 123456,
+				Date:        "2015-03-12",
+				Description: "Buy present",
+				Change:      123456,
 			},
 		},
 		expected: `
@@ -166,9 +166,9 @@ Datum      | Omschrijving              | Verandering
 		locale:   "nl-NL",
 		entries: []Entry{
 			{
-				Date:   "2015-03-12",
-				date:   "Buy present",
-				Change: -12345,
+				Date:        "2015-03-12",
+				Description: "Buy present",
+				Change:      -12345,
 			},
 		},
 		expected: `
@@ -182,9 +182,9 @@ Datum      | Omschrijving              | Verandering
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-03-12",
-				date:   "Buy present",
-				Change: -12345,
+				Date:        "2015-03-12",
+				Description: "Buy present",
+				Change:      -12345,
 			},
 		},
 		expected: `
@@ -230,9 +230,9 @@ var failureTestCases = []struct {
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-131-11",
-				date:   "Buy present",
-				Change: 12345,
+				Date:        "2015-131-11",
+				Description: "Buy present",
+				Change:      12345,
 			},
 		},
 	},
@@ -242,9 +242,9 @@ var failureTestCases = []struct {
 		locale:   "en-US",
 		entries: []Entry{
 			{
-				Date:   "2015-12/11",
-				date:   "Buy present",
-				Change: 12345,
+				Date:        "2015-12/11",
+				Description: "Buy present",
+				Change:      12345,
 			},
 		},
 	},
@@ -285,14 +285,14 @@ func TestFormatLedgerFailure(t *testing.T) {
 func TestFormatLedgerNotChangeInput(t *testing.T) {
 	entries := []Entry{
 		{
-			Date:   "2015-01-02",
-			date:   "Freude schöner Götterfunken",
-			Change: 1000,
+			Date:        "2015-01-02",
+			Description: "Freude schöner Götterfunken",
+			Change:      1000,
 		},
 		{
-			Date:   "2015-01-01",
-			date:   "Buy present",
-			Change: -1000,
+			Date:        "2015-01-01",
+			Description: "Buy present",
+			Change:      -1000,
 		},
 	}
 	entriesCopy := make([]Entry, len(entries))
