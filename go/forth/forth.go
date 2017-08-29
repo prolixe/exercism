@@ -23,11 +23,28 @@ const (
 	Over = "OVER"
 )
 
-//TODO: Harmonize the naming: commands/words/op should be one concept.
+type UserCommands map[string][]string
 
-//TODO: Move as a var inside Forth()
-//TODO: Wrap in a type and create methods for it.
-var words = make(map[string][]string)
+func (u *UserCommands) addWord(commands []string) error {
+
+	if len(commands) < 2 {
+		return fmt.Errorf("insuficient commands to define new op %v", commands)
+	}
+	if isInteger.MatchString(commands[0]) {
+		return fmt.Errorf("can't redefine integers")
+	}
+	(*u)[commands[0]] = commands[1:]
+	return nil
+}
+
+func (u *UserCommands) isUserDefinedCommand(command string) bool {
+	_, ok := (*u)[strings.ToUpper(command)]
+	return ok
+}
+func (u *UserCommands) getCommands(command string) []string {
+	commands, _ := (*u)[strings.ToUpper(command)]
+	return commands
+}
 
 type Stack struct {
 	elements []int
@@ -54,6 +71,7 @@ var isInteger = regexp.MustCompile(`^[0-9]+$`)
 
 func Forth(input []string) ([]int, error) {
 
+	userCommands := make(UserCommands)
 	stack := Stack{elements: make([]int, 0)}
 
 	commandList := make([]string, 0)
@@ -66,7 +84,7 @@ func Forth(input []string) ([]int, error) {
 		switch {
 		case ";" == i:
 			addingUserDefWord = false
-			if err := addWord(commandList); err != nil {
+			if err := userCommands.addWord(commandList); err != nil {
 				return nil, err
 			}
 			commandList = make([]string, 0)
@@ -78,8 +96,8 @@ func Forth(input []string) ([]int, error) {
 				return nil, err
 			}
 			stack.Push(integer)
-		case isUserDefinedCommand(i):
-			for _, op := range getCommands(i) {
+		case userCommands.isUserDefinedCommand(i):
+			for _, op := range userCommands.getCommands(i) {
 				if isInteger.MatchString(string(op)) {
 					integer, err := strconv.Atoi(op)
 					if err != nil {
@@ -107,29 +125,8 @@ func Forth(input []string) ([]int, error) {
 	return stack.elements, nil
 }
 
-func addWord(commands []string) error {
-
-	if len(commands) < 2 {
-		return fmt.Errorf("insuficient commands to define new op %v", commands)
-	}
-	if isInteger.MatchString(commands[0]) {
-		return fmt.Errorf("can't redefine integers")
-	}
-	words[commands[0]] = commands[1:]
-	return nil
-}
-
-func isUserDefinedCommand(command string) bool {
-	_, ok := words[strings.ToUpper(command)]
-	return ok
-}
-func getCommands(command string) []string {
-	commands, _ := words[strings.ToUpper(command)]
-	return commands
-}
-
-func isBuiltInOp(input string) bool {
-	switch strings.ToUpper(input) {
+func isBuiltInOp(op string) bool {
+	switch strings.ToUpper(op) {
 	case "+", "-", "*", "/", "DUP", "DROP", "SWAP", "OVER":
 		return true
 	}
