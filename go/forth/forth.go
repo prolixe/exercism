@@ -23,6 +23,10 @@ const (
 	Over = "OVER"
 )
 
+//TODO: Harmonize the naming: commands/words/op should be one concept.
+
+//TODO: Move as a var inside Forth()
+//TODO: Wrap in a type and create methods for it.
 var words = make(map[string][]string)
 
 type Stack struct {
