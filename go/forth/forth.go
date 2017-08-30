@@ -127,7 +127,7 @@ func Forth(input []string) ([]int, error) {
 
 func isBuiltInOp(op string) bool {
 	switch strings.ToUpper(op) {
-	case "+", "-", "*", "/", "DUP", "DROP", "SWAP", "OVER":
+	case Add, Sub, Mul, Div, Dup, Drop, Swap, Over:
 		return true
 	}
 	return false
