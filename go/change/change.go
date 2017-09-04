@@ -22,14 +22,12 @@ func (c *CoinsList) Sum() int {
 
 func Change(coins []int, target int) ([]int, error) {
 
-	sort.Sort(sort.Reverse(sort.IntSlice(coins)))
-
 	// Deal with special cases
 	if target == 0 {
 		return []int{}, nil
 	}
 
-	if target < coins[len(coins)-1] {
+	if target < coins[0] {
 		return nil, fmt.Errorf("change %d smallest than smallest of coins", target)
 	}
 
@@ -44,6 +42,8 @@ func Change(coins []int, target int) ([]int, error) {
 			// Check the smallest change combo to see if we can get our t value
 			// with our coin and a combo for the difference t - c
 			subList := smallestChangeCombos[t-c]
+			// Need to validate that the sum of the sublist is really t, since
+			// some change combo might be impossible.
 			if subList.Sum()+c == t {
 				changeCombinations = append(changeCombinations, append(subList, c))
 			}
