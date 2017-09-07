@@ -39,23 +39,32 @@ func NewGame() *Game {
 	return &g
 }
 
-func (g *Game) Score() (int, error) {
+func (g *Game) validate() error {
 
-	score := 0
 	if g.currentFrame != 9 {
-		return 0, errors.New("Score cannot be taken until the end of the game")
+		return errors.New("Score cannot be taken until the end of the game")
 	}
 
 	if g.currentBall < 2 {
-		return 0, errors.New("Score cannot be taken until the end of the game")
+		return errors.New("Score cannot be taken until the end of the game")
 	}
 
 	if g.f[9].balls[0] == 10 && g.f[9].balls[0] == 10 && g.currentBall != 3 {
-		return 0, errors.New("Score cannot be taken until the end of the game")
+		return errors.New("Score cannot be taken until the end of the game")
 	}
 
 	if g.f[9].IsSpare() && g.currentBall != 3 {
-		return 0, errors.New("Score cannot be taken until the end of the game")
+		return errors.New("Score cannot be taken until the end of the game")
+	}
+	return nil
+}
+
+func (g *Game) Score() (int, error) {
+
+	score := 0
+
+	if err := g.validate(); err != nil {
+		return 0, err
 	}
 
 	for i, frame := range g.f {
