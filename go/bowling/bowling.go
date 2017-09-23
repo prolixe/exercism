@@ -49,7 +49,7 @@ func (g *Game) validate() error {
 		return errors.New("Score cannot be taken until the end of the game")
 	}
 
-	if g.f[9].balls[0] == 10 && g.f[9].balls[0] == 10 && g.currentBall != 3 {
+	if g.f[9].balls[0] == 10 && g.currentBall != 3 {
 		return errors.New("Score cannot be taken until the end of the game")
 	}
 
