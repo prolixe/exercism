@@ -9,17 +9,11 @@ type Frame struct {
 }
 
 func (f *Frame) IsSpare() bool {
-	if f.balls[0] != 10 && f.balls[0]+f.balls[1] == 10 {
-		return true
-	}
-	return false
+	return f.balls[0] != 10 && f.balls[0]+f.balls[1] == 10
 }
 
 func (f *Frame) IsStrike() bool {
-	if f.balls[0] == 10 {
-		return true
-	}
-	return false
+	return f.balls[0] == 10
 }
 
 type Game struct {
