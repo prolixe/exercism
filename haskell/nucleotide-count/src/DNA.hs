@@ -7,7 +7,7 @@ nucleotideCounts xs
     | any notANucleotide xs = Left xs
     | otherwise = Right $ Map.fromList $  map countNucleotide nucleotides
     where notANucleotide x =  x `notElem` nucleotides
-          countNucleotide x= (x, fromIntegral (length (filter (x==) xs)))
+          countNucleotide x= (x, length (filter (x==) xs))
           nucleotides = "ACGT"
 
 
