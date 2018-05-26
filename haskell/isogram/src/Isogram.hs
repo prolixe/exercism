@@ -1,9 +1,8 @@
 module Isogram (isIsogram) where
 
-import Data.Char
+import Data.List (nub)
+import Data.Char (toLower, isAlpha)
 
+-- This way is really the cleanest!
 isIsogram :: String -> Bool
-isIsogram xs = all isUniqueLetter loweredString
-    where loweredString = map toLower xs
-          isUniqueLetter x = (not . isLetter) x 
-                             || 1 == length (filter (x==) loweredString)
+isIsogram = (\x -> nub x == x) . map toLower . filter isAlpha
