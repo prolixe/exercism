@@ -18,9 +18,6 @@ checks = [isValidFormat, isCorrectLength, isValidFormula . toIsbnInt]
 isIsbnChar :: Char -> Bool
 isIsbnChar x = isDigit x || 'X' == x
 
-allValidIsbnChar :: String -> Bool
-allValidIsbnChar = all isIsbnChar
-
 isCorrectLength :: String -> Bool
 isCorrectLength = (10 ==) . length
 
@@ -39,8 +36,6 @@ isValidFormula [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10] =
    x10) `mod`
   11 ==
   0
-
-isValidFormulaxs = False
 
 isValidFormat :: String -> Bool
 isValidFormat xs = all isDigit (init xs) && isIsbnChar (last xs)
