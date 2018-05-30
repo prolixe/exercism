@@ -32,5 +32,4 @@ toPlant 'R' = Radishes
 toPlant 'V' = Violets
 
 lookupPlants :: String -> Garden -> [Plant]
-lookupPlants student garden =
-  snd . head $ filter (\(s, _) -> s == student) garden
+lookupPlants student garden = snd . head $ filter ((== student) . fst) garden
