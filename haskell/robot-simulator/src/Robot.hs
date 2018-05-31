@@ -24,20 +24,20 @@ mkRobot :: Bearing -> (Integer, Integer) -> Robot
 mkRobot = Robot
 
 simulate :: Robot -> String -> Robot
-simulate = foldl applyInstruction
+simulate = foldl applyStep
 
-applyInstruction :: Robot -> Char -> Robot
-applyInstruction r 'R' = mkRobot (turnRight (bearing r)) (coordinates r)
-applyInstruction r 'L' = mkRobot (turnLeft (bearing r)) (coordinates r)
-applyInstruction r 'A' = advance r
-applyInstruction r _   = r
+applyStep :: Robot -> Char -> Robot
+applyStep (Robot b c) 'R' = mkRobot (turnRight b) c
+applyStep (Robot b c) 'L' = mkRobot (turnLeft b) c
+applyStep robot 'A'       = advance robot
+applyStep robot _         = robot
 
 advance :: Robot -> Robot
-advance r
-  | bearing r == North = mkRobot (bearing r) (goNorth $ coordinates r)
-  | bearing r == East = mkRobot (bearing r) (goEast $ coordinates r)
-  | bearing r == South = mkRobot (bearing r) (goSouth $ coordinates r)
-  | bearing r == West = mkRobot (bearing r) (goWest $ coordinates r)
+advance (Robot b c)
+  | b == North = mkRobot b (goNorth c)
+  | b == East = mkRobot b (goEast c)
+  | b == South = mkRobot b (goSouth c)
+  | b == West = mkRobot b (goWest c)
   where
     goNorth c = (fst c, snd c + 1)
     goEast c = (fst c + 1, snd c)
