@@ -39,10 +39,10 @@ advance r
   | bearing r == South = mkRobot (bearing r) (goSouth $ coordinates r)
   | bearing r == West = mkRobot (bearing r) (goWest $ coordinates r)
   where
-    goNorth r = (fst r, snd r + 1)
-    goEast r = (fst r + 1, snd r)
-    goSouth r = (fst r, snd r - 1)
-    goWest r = (fst r - 1, snd r)
+    goNorth c = (fst c, snd c + 1)
+    goEast c = (fst c + 1, snd c)
+    goSouth c = (fst c, snd c - 1)
+    goWest c = (fst c - 1, snd c)
 
 turnLeft :: Bearing -> Bearing
 turnLeft direction =
