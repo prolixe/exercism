@@ -2,20 +2,10 @@ module PrimeFactors
   ( primeFactors
   ) where
 
-import           Data.List.Ordered (minus)
-
 primeFactors :: Integer -> [Integer]
-primeFactors n
-  | any isPrimeOf primeList = primeFactor : primeFactors (n `div` primeFactor)
-  | otherwise = []
-  where
-    primeList = primesToQ n
-    isPrimeOf p = n `rem` p == 0
-    primeFactor = head $ dropWhile (not . isPrimeOf) primeList
+primeFactors n = factors n (2 : [3,5 ..])
 
--- taken from https://wiki.haskell.org/Prime_numbers#Sieve_of_Eratosthenes
-primesToQ :: Integer -> [Integer]
-primesToQ m = eratos [2 .. m]
-  where
-    eratos []     = []
-    eratos (p:xs) = p : eratos (xs `minus` [p * p,p * p + p .. m])
+factors n (p:ps)
+  | n `rem` p == 0 = p : factors (n `div` p) (p : ps)
+  | n == 1 = []
+  | otherwise = factors n ps

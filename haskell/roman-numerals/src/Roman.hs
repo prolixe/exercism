@@ -5,10 +5,10 @@ module Roman
 import qualified Data.Map as M
 
 numerals :: Integer -> Maybe String
-numerals n = Just $ singleNumeral n "" mapArabicToRoman
+numerals n = Just $ numerals' n "" listArabicToRoman
 
-mapArabicToRoman :: [(String, Integer)]
-mapArabicToRoman =
+listArabicToRoman :: [(String, Integer)]
+listArabicToRoman =
   [ ("M", 1000)
   , ("CM", 900)
   , ("D", 500)
@@ -24,14 +24,14 @@ mapArabicToRoman =
   , ("I", 1)
   ]
 
-singleNumeral :: Integer -> String -> [(String, Integer)] -> String
-singleNumeral numeral roman list
+numerals' :: Integer -> String -> [(String, Integer)] -> String
+numerals' numeral roman list
   | null list = roman
   | numeral > currentArabic =
-    singleNumeral (numeral - currentArabic) (roman ++ currentRoman) list
+    numerals' (numeral - currentArabic) (roman ++ currentRoman) list
   | numeral == currentArabic =
-    singleNumeral (numeral - currentArabic) (roman ++ currentRoman) (tail list)
-  | otherwise = singleNumeral numeral roman (tail list)
+    numerals' (numeral - currentArabic) (roman ++ currentRoman) (tail list)
+  | otherwise = numerals' numeral roman (tail list)
   where
     currentArabic = snd $ head list
     currentRoman = fst $ head list
