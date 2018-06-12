@@ -3,8 +3,6 @@ module Base
   , rebase
   ) where
 
-import           Data.Digits (digits, unDigits)
-
 data Error a
   = InvalidInputBase
   | InvalidOutputBase
@@ -18,3 +16,15 @@ rebase from to xs
   | any (< 0) xs = Left $ InvalidDigit $ head $ filter (< 0) xs
   | any (>= from) xs = Left $ InvalidDigit $ head $ filter (>= from) xs
   | otherwise = (Right . digits to . unDigits from) xs
+
+unDigits :: Integral a => a -> [a] -> a
+unDigits base = foldl (\a b -> a * base + b) 0
+
+digits :: Integral a => a -> a -> [a]
+digits base = reverse . reversedDigits base
+
+reversedDigits :: Integral a => a -> a -> [a]
+reversedDigits _ 0 = []
+reversedDigits base number =
+  let (rest, lastDigit) = quotRem number base
+  in lastDigit : reversedDigits base rest
