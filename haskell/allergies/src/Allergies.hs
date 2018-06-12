@@ -30,6 +30,4 @@ allergies score
   | otherwise = []
 
 isAllergicTo :: Allergen -> Int -> Bool
-isAllergicTo allergen score
-  | allergen `elem` allergies score = True
-  | otherwise = False
+isAllergicTo allergen score = allergen `elem` allergies score
