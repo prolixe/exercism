@@ -14,11 +14,12 @@ isPythagorean (a, b, c) =
 mkTriplet :: Int -> Int -> Int -> (Int, Int, Int)
 mkTriplet a b c = (a, b, c)
 
+-- Using List comprehension.
 pythagoreanTriplets :: Int -> Int -> [(Int, Int, Int)]
 pythagoreanTriplets minFactor maxFactor =
-  nubBy isSameTriangle $
-  filter isPythagorean $ addToTupple <$> range <*> ((,) <$> range <*> range)
-  where
-    addToTupple a (b, c) = (a, b, c)
-    range = [minFactor .. maxFactor]
-    isSameTriangle (a, b, c) (d, e, f) = sort [a, b, c] == sort [d, e, f]
+  [ (a, b, c)
+  | a <- [minFactor .. maxFactor]
+  , b <- [a .. maxFactor]
+  , c <- [b .. maxFactor]
+  , isPythagorean (a, b, c)
+  ]
