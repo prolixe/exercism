@@ -4,7 +4,8 @@ module Triplet
   , pythagoreanTriplets
   ) where
 
-import           Data.List (nubBy, sort)
+import           Control.Monad (guard)
+import           Data.List     (sort)
 
 isPythagorean :: (Int, Int, Int) -> Bool
 isPythagorean (a, b, c) =
@@ -14,12 +15,10 @@ isPythagorean (a, b, c) =
 mkTriplet :: Int -> Int -> Int -> (Int, Int, Int)
 mkTriplet a b c = (a, b, c)
 
--- Using List comprehension.
 pythagoreanTriplets :: Int -> Int -> [(Int, Int, Int)]
-pythagoreanTriplets minFactor maxFactor =
-  [ (a, b, c)
-  | a <- [minFactor .. maxFactor]
-  , b <- [a .. maxFactor]
-  , c <- [b .. maxFactor]
-  , isPythagorean (a, b, c)
-  ]
+pythagoreanTriplets min max = do
+  a <- [min .. max]
+  b <- [a .. max]
+  c <- [b .. max]
+  guard $ isPythagorean (a, b, c)
+  return (a, b, c)
