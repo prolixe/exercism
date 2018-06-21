@@ -16,4 +16,4 @@ decode = filter isAlphaNum . map atbashCipher
     reversed = ['z','y' .. 'a']
 
 encode :: String -> String
-encode = unwords . chunksOf 5 . decode . filter isAlphaNum . map toLower
+encode = unwords . chunksOf 5 . decode . map toLower
