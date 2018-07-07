@@ -34,10 +34,5 @@ boardString white black
         [0 .. 7]
 
 canAttack :: (Int, Int) -> (Int, Int) -> Bool
-canAttack queenA queenB =
+canAttack (rankA, fileA) (rankB, fileB) =
   rankA == rankB || fileA == fileB || abs (rankA - rankB) == abs (fileA - fileB)
-  where
-    rankA = fst queenA
-    rankB = fst queenB
-    fileA = snd queenA
-    fileB = snd queenB
