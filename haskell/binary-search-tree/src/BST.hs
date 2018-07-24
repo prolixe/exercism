@@ -10,12 +10,24 @@ module BST
   , toList
   ) where
 
+import           Data.Foldable
+import           Data.List     (foldl')
+
 data BST a
   = EmptyTree
   | Node a
          (BST a)
          (BST a)
   deriving (Eq, Show)
+
+instance Ord a => Monoid (BST a) where
+  mempty = empty
+  mappend x y = fromList (toList x ++ toList y)
+
+instance Foldable BST where
+  foldMap f EmptyTree = mempty
+  foldMap f (Node x left right) =
+    foldMap f left `mappend` f x `mappend` foldMap f right
 
 bstLeft :: BST a -> Maybe (BST a)
 bstLeft EmptyTree       = Nothing
@@ -33,7 +45,7 @@ empty :: BST a
 empty = EmptyTree
 
 fromList :: Ord a => [a] -> BST a
-fromList = foldl (flip insert) EmptyTree
+fromList = foldl' (flip insert) EmptyTree
 
 insert :: Ord a => a -> BST a -> BST a
 insert x EmptyTree = Node x EmptyTree EmptyTree
@@ -43,7 +55,3 @@ insert x (Node a left right)
 
 singleton :: Ord a => a -> BST a
 singleton x = insert x EmptyTree
-
-toList :: BST a -> [a]
-toList EmptyTree           = []
-toList (Node x left right) = toList left ++ [x] ++ toList right
