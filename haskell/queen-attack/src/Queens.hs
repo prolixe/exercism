@@ -3,36 +3,20 @@ module Queens
   , canAttack
   ) where
 
-import           Data.List
-import           Data.Maybe
-
 boardString :: Maybe (Int, Int) -> Maybe (Int, Int) -> String
-boardString white black
-  | isNothing white && isNothing black = emptyBoard
-  | isNothing white = placeInRank 'B' (fromJust black) emptyBoard
-  | isNothing black = placeInRank 'W' (fromJust white) emptyBoard
-  | otherwise =
-    placeInRank 'B' (fromJust black) $
-    placeInRank 'W' (fromJust white) emptyBoard
+boardString w b =
+  unlines $
+  map
+    (unwords . map ((: []) . decode))
+    [[(x, y) | y <- [0 .. 7]] | x <- [0 .. 7]]
   where
-    emptyBoard = unlines $ replicate 8 $ intersperse ' ' $ replicate 8 '_'
-    placeInRank c queen board =
-      unlines $
-      map
-        (\(i, r) ->
-           if i == fst queen
-             then placeQueen c queen
-             else r) $
-      zip [0 ..] (lines board)
-    placeQueen c queen =
-      intersperse ' ' $
-      map
-        (\i ->
-           if snd queen == i
-             then c
-             else '_')
-        [0 .. 7]
+    decode x =
+      if Just x == w
+        then 'W'
+        else if Just x == b
+               then 'B'
+               else '_'
 
 canAttack :: (Int, Int) -> (Int, Int) -> Bool
-canAttack (rankA, fileA) (rankB, fileB) =
-  rankA == rankB || fileA == fileB || abs (rankA - rankB) == abs (fileA - fileB)
+canAttack (x, y) (x', y') =
+  x == x' || y == y' || x - x' == y - y' || x - x' == y' - y
