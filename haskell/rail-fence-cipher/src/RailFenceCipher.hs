@@ -19,9 +19,8 @@ isElemInRow step row pos =
   (pos + row) `rem` step == 0 || (pos - row) `rem` step == 0
 
 --decode undo the encoding by mapping an index to every element and sort them
-decode :: Int -> [a] -> [a]
-decode rail message =
-  map snd $ sortBy (\(a, _) (b, _) -> compare a b) mappedMessage
+decode :: Ord a => Int -> [a] -> [a]
+decode rail message = map snd $ sort mappedMessage
   where
     mapIndex = mapPos rail (length message)
     mappedMessage = zip mapIndex message
