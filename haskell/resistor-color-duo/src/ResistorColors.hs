@@ -1,7 +1,10 @@
-module ResistorColors (Color(..), value) where
+module ResistorColors
+  ( Color(..)
+  , value
+  ) where
 
-data Color =
-    Black
+data Color
+  = Black
   | Brown
   | Red
   | Orange
@@ -14,6 +17,6 @@ data Color =
   deriving (Enum, Eq, Show, Read)
 
 value :: [Color] -> Int
-value = foldl addColor 0                                                                                                                        
-  where                                                                                                                                           
+value = foldl addColor 0
+  where
     addColor num c = 10 * num + fromEnum c
