@@ -11,7 +11,9 @@ data Color =
   | Violet
   | Grey
   | White
-  deriving (Eq, Show, Read)
+  deriving (Enum, Eq, Show, Read)
 
 value :: [Color] -> Int
-value cs = error "You need to implement this function."
+value = foldl addColor 0                                                                                                                        
+  where                                                                                                                                           
+    addColor num c = 10 * num + fromEnum c
