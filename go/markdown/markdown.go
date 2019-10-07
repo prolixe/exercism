@@ -19,10 +19,9 @@ func renderBold(markdown string) string {
 	return markdown
 }
 
-func htmlize(markdown string) string {
+func formatHeader(markdown string) (string, int) {
 	pos := 0
 	header := 0
-	list := 0
 	html := ""
 	for {
 		char := markdown[pos]
@@ -36,6 +35,28 @@ func htmlize(markdown string) string {
 			pos++
 			continue
 		}
+		if char == '\n' {
+			if header > 0 {
+				html += fmt.Sprintf("</h%d>", header)
+				header = 0
+			}
+		}
+		html += string(char)
+		pos++
+		if pos >= len(markdown) {
+			break
+		}
+	}
+	return html, header
+
+}
+
+func formatList(markdown string) (string, bool) {
+	pos := 0
+	list := 0
+	html := ""
+	for {
+		char := markdown[pos]
 		if char == '*' {
 			if list == 0 {
 				html += "<ul>"
@@ -49,10 +70,6 @@ func htmlize(markdown string) string {
 			if list > 0 {
 				html += "</li>"
 			}
-			if header > 0 {
-				html += fmt.Sprintf("</h%d>", header)
-				header = 0
-			}
 			pos++
 			continue
 		}
@@ -62,10 +79,18 @@ func htmlize(markdown string) string {
 			break
 		}
 	}
+
+	return html, list > 0
+}
+
+func htmlize(markdown string) string {
+	html := ""
+	markdown, header := formatHeader(markdown)
+	html, closeList := formatList(markdown)
 	if header > 0 {
 		return html + fmt.Sprintf("</h%d>", header)
 	}
-	if list > 0 {
+	if closeList {
 		return html + "</li></ul>"
 	}
 	return "<p>" + html + "</p>"
