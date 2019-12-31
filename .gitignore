@@ -28,3 +28,6 @@ dist-*
 
 #Vim stuff
 *.vim
+
+# elm stuff
+elm-stuff/
